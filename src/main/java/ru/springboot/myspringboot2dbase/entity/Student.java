@@ -27,5 +27,4 @@ public class Student {
 
     @Column(name = "age")
     private int age;
-
 }

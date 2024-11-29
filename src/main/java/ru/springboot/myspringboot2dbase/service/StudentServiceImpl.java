@@ -1,6 +1,5 @@
 package ru.springboot.myspringboot2dbase.service;
 
-import ru.springboot.myspringboot2dbase.exception.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.springboot.myspringboot2dbase.dao.StudentDao;
 import ru.springboot.myspringboot2dbase.entity.Student;
@@ -28,19 +27,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getStudent(int id) {
-        Student student = studentDao.getStudent(id);
-        if (student == null) {
-            throw new EntityNotFoundException("Не удалось найти студента с id '" + id + "'");
-        }
         return studentDao.getStudent(id);
     }
 
     @Override
     public void deleteStudent(int id) {
-        Student student = studentDao.getStudent(id);
-        if (student == null) {
-            throw new EntityNotFoundException("Не удалось найти студента с id '" + id + "'");
-        }
         studentDao.deleteStudent(id);
     }
 }

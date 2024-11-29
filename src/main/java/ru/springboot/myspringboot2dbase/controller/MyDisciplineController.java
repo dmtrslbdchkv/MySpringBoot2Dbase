@@ -2,13 +2,12 @@ package ru.springboot.myspringboot2dbase.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.springboot.myspringboot2dbase.entity.Discipline;
-import ru.springboot.myspringboot2dbase.model.OperationResult;
 import ru.springboot.myspringboot2dbase.service.DisciplineService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/disciplines")
+@RequestMapping("/api")
 public class MyDisciplineController {
 
     private final DisciplineService disciplineService;
@@ -17,34 +16,29 @@ public class MyDisciplineController {
         this.disciplineService = disciplineService;
     }
 
-    @GetMapping
-    public OperationResult<List<Discipline>> getAllDisciplines() {
-        return new OperationResult<>(OperationResult.SUCCESS_MESSAGE, disciplineService.getAllDisciplines());
+    @GetMapping("/disciplines")
+    public List<Discipline> getAllDisciplines() {
+        return disciplineService.getAllDisciplines();
     }
 
-    @GetMapping("/{id}")
-    public OperationResult<Object> getDiscipline(@PathVariable("id") int id) {
-        return new OperationResult<>(OperationResult.SUCCESS_MESSAGE, disciplineService.getDiscipline(id));
+    @GetMapping("/disciplines/{id}")
+    public Discipline getDiscipline(@PathVariable("id") int id) {
+        return disciplineService.getDiscipline(id);
     }
 
-    @PostMapping
-    public OperationResult<Discipline> saveDiscipline(@RequestBody Discipline discipline) {
-        return new OperationResult<>(OperationResult.SUCCESS_MESSAGE, disciplineService.saveDiscipline(discipline));
+    @PostMapping("/disciplines")
+    public Discipline saveDiscipline(@RequestBody Discipline discipline) {
+        return disciplineService.saveDiscipline(discipline);
     }
 
-    @PutMapping
-    public OperationResult<Discipline> updateDiscipline(@RequestBody Discipline discipline) {
-        return new OperationResult<>(OperationResult.SUCCESS_MESSAGE, disciplineService.saveDiscipline(discipline));
+    @PutMapping("/disciplines")
+    public Discipline updateDiscipline(@RequestBody Discipline discipline) {
+        disciplineService.saveDiscipline(discipline);
+        return discipline;
     }
 
-    @DeleteMapping("/{id}")
-    public OperationResult<Object> deleteDiscipline(@PathVariable("id") int id) {
+    @DeleteMapping("/disciplines/{id}")
+    public void deleteDiscipline(@PathVariable("id") int id) {
         disciplineService.deleteDiscipline(id);
-        return new OperationResult<>(OperationResult.SUCCESS_MESSAGE, null);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public OperationResult<String> handleException(Exception e) {
-        return new OperationResult<>(OperationResult.ERROR_MESSAGE, e.getMessage());
     }
 }
