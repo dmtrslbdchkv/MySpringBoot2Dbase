@@ -1,5 +1,6 @@
 package ru.springboot.myspringboot2dbase.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.springboot.myspringboot2dbase.dao.DisciplineDao;
 import ru.springboot.myspringboot2dbase.entity.Discipline;
@@ -27,11 +28,19 @@ public class DisciplineServiceImpl implements DisciplineService {
 
     @Override
     public Discipline getDiscipline(int id) {
+        Discipline discipline = disciplineDao.getDiscipline(id);
+        if (discipline == null) {
+            throw new EntityNotFoundException("Дисциплина с " + id + " не найдена");
+        }
         return disciplineDao.getDiscipline(id);
     }
 
     @Override
     public void deleteDiscipline(int id) {
+        Discipline discipline = disciplineDao.getDiscipline(id);
+        if (discipline == null) {
+            throw new EntityNotFoundException("Дисциплина с " + id + " не найдена");
+        }
         disciplineDao.deleteDiscipline(id);
     }
 }

@@ -2,6 +2,7 @@ package ru.springboot.myspringboot2dbase.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.springboot.myspringboot2dbase.entity.Discipline;
+import ru.springboot.myspringboot2dbase.model.Result;
 import ru.springboot.myspringboot2dbase.service.DisciplineService;
 
 import java.util.List;
@@ -17,28 +18,34 @@ public class MyDisciplineController {
     }
 
     @GetMapping("/disciplines")
-    public List<Discipline> getAllDisciplines() {
-        return disciplineService.getAllDisciplines();
+    public Result<List<Discipline>> getAllDisciplines() {
+        return new Result<>(Result.SUCCESS_MESSAGE, disciplineService.getAllDisciplines());
     }
 
     @GetMapping("/disciplines/{id}")
-    public Discipline getDiscipline(@PathVariable("id") int id) {
-        return disciplineService.getDiscipline(id);
+    public Result<Discipline> getDiscipline(@PathVariable("id") int id) {
+        return new Result<>(Result.SUCCESS_MESSAGE, disciplineService.getDiscipline(id));
     }
 
     @PostMapping("/disciplines")
-    public Discipline saveDiscipline(@RequestBody Discipline discipline) {
-        return disciplineService.saveDiscipline(discipline);
+    public Result<Discipline> saveDiscipline(@RequestBody Discipline discipline) {
+        return new Result<>(Result.SUCCESS_MESSAGE, disciplineService.saveDiscipline(discipline));
     }
 
     @PutMapping("/disciplines")
-    public Discipline updateDiscipline(@RequestBody Discipline discipline) {
+    public Result<Discipline> updateDiscipline(@RequestBody Discipline discipline) {
         disciplineService.saveDiscipline(discipline);
-        return discipline;
+        return new Result<>(Result.SUCCESS_MESSAGE, discipline);
     }
 
     @DeleteMapping("/disciplines/{id}")
-    public void deleteDiscipline(@PathVariable("id") int id) {
+    public Result<Object> deleteDiscipline(@PathVariable("id") int id) {
         disciplineService.deleteDiscipline(id);
+        return new Result<>(Result.SUCCESS_MESSAGE, null);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public Result<String> handleException(Exception e) {
+        return new Result<>(Result.ERROR_MESSAGE, e.getMessage());
     }
 }
